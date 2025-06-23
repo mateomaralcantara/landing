@@ -4,19 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Inscripción de Estudiantes</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f7f7f7; }
+    .container { max-width: 500px; margin: auto; background: white; padding: 2rem; border-radius: 8px; }
+    input, button { width: 100%; margin: 0.5rem 0; padding: 0.5rem; font-size: 1rem; }
+    #mensaje { margin-top: 1rem; font-weight: bold; }
+  </style>
 </head>
 <body>
   <div class="container">
-    <img src="images/Secretariado.jpg" alt="Secretariado Ejecutivo" class="banner" />
     <h1>¡Inscríbete Hoy!</h1>
     <h3>Completa este formulario y participa para ser una de las 20 seleccionadas.</h3>
 
     <form id="formulario">
-      <input type="text" name="nombre_completo" placeholder="Nombre completo" required />
-      <input type="number" name="edad" placeholder="Edad" min="16" max="99" required />
-      <input type="email" name="correo_electronico" placeholder="Correo electrónico" required />
-      <input type="tel" name="telefono" placeholder="Teléfono" required />
+      <input type="text" id="nombre_completo" placeholder="Nombre completo" required />
+      <input type="number" id="edad" placeholder="Edad" min="16" max="99" required />
+      <input type="email" id="correo_electronico" placeholder="Correo electrónico" required />
+      <input type="tel" id="telefono" placeholder="Teléfono" required />
       <button type="submit">Inscribirme</button>
     </form>
 
@@ -27,7 +31,18 @@
     const SUPABASE_URL = 'https://dshmmwyknvmxeeqsuxpt.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzaG1td3lrbnZteGVlcXN1eHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3MTEwOTIsImV4cCI6MjA2NjI4NzA5Mn0.-FbDqdWKsjLjVmjtz42J7FRfhKklXjrOiAgo3jd7r_k';
 
-    async function enviarFormulario(data) {
+    document.getElementById("formulario").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const data = {
+        nombre_completo: document.getElementById("nombre_completo").value,
+        edad: parseInt(document.getElementById("edad").value),
+        correo_electronico: document.getElementById("correo_electronico").value,
+        telefono: document.getElementById("telefono").value
+      };
+
+      const mensaje = document.getElementById("mensaje");
+
       try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/inscripciones`, {
           method: 'POST',
@@ -35,43 +50,25 @@
             'Content-Type': 'application/json',
             'apikey': SUPABASE_KEY,
             'Authorization': `Bearer ${SUPABASE_KEY}`,
-            'Prefer': 'return=representation'
+            'Prefer': 'return=minimal'
           },
           body: JSON.stringify(data)
         });
 
-        const responseBody = await response.json();
-        if (!response.ok) {
-          console.error("Error del servidor:", response.status, response.statusText, responseBody);
+        if (response.ok) {
+          mensaje.innerText = "✅ ¡Formulario enviado correctamente!";
+          mensaje.style.color = "green";
+          this.reset();
+        } else {
+          const error = await response.text();
+          mensaje.innerText = "❌ Error al enviar: " + error;
+          mensaje.style.color = "red";
+          console.error("Respuesta no OK:", error);
         }
-        return response.ok;
-      } catch (error) {
-        console.error("Error de conexión o de código:", error);
-        return false;
-      }
-    }
-
-    document.getElementById("formulario").addEventListener("submit", async function(e) {
-      e.preventDefault();
-      
-      const form = e.target;
-      const data = {
-        nombre_completo: form.nombre_completo.value,
-        edad: parseInt(form.edad.value),
-        correo_electronico: form.correo_electronico.value,
-        telefono: form.telefono.value
-      };
-
-      const mensaje = document.getElementById("mensaje");
-      const exito = await enviarFormulario(data);
-      
-      if (exito) {
-        mensaje.innerText = "✅ ¡Formulario enviado correctamente!";
-        mensaje.style.color = "green";
-        form.reset();
-      } else {
-        mensaje.innerText = "❌ Hubo un error al enviar el formulario. Revisa la consola.";
+      } catch (err) {
+        mensaje.innerText = "❌ Error de red o configuración.";
         mensaje.style.color = "red";
+        console.error("Excepción:", err);
       }
     });
   </script>

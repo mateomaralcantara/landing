@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inscripción de Estudiantes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <img src="images/Secretariado.jpg" alt="Secretariado Ejecutivo" class="banner" />
+    <h1>¡Inscríbete Hoy!</h1>
+    <h3>Completa este formulario y participa para ser una de las 20 seleccionadas.</h3>
+    
+    <form action="https://formsubmit.co/istemsd@gmail.com" method="POST">
+      <input type="text" name="nombre_completo" placeholder="Nombre completo" required />
+      <input type="number" name="edad" placeholder="Edad" min="16" max="99" required />
+      <input type="email" name="email" placeholder="Correo electrónico" required />
+      <input type="tel" name="telefono" placeholder="Teléfono" />
+      <input type="text" name="curso" value="Secretariado Ejecutivo" readonly />
+
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_next" value="https://tusitio.vercel.app/gracias.html" />
+
+      <button type="submit">Inscribirme</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -6,7 +6,7 @@
   <title>Inscripción de Estudiantes</title>
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Open Graph (para Facebook, WhatsApp, LinkedIn) -->
+  <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
   <meta property="og:title" content="Inscripción al Curso de Secretariado Ejecutivo" />
   <meta property="og:description" content="Participa para ser una de las 20 seleccionadas. ¡Inscríbete hoy y transforma tu futuro con TotalCash!" />
   <meta property="og:image" content="https://totalcash.xyz/images/preview.jpg" />
@@ -18,13 +18,16 @@
   <meta name="twitter:title" content="Curso de Secretariado Ejecutivo" />
   <meta name="twitter:description" content="Participa en nuestro curso exclusivo y forma parte de las seleccionadas." />
   <meta name="twitter:image" content="https://totalcash.xyz/images/preview.jpg" />
+
+  <!-- Favicon por si acaso -->
+  <link rel="icon" href="/favicon.ico" />
 </head>
 <body>
   <div class="container">
     <img src="images/Secretariado.jpg" alt="Secretariado Ejecutivo" class="banner" />
     <h1>¡Inscríbete Hoy!</h1>
     <h3>Completa este formulario y participa para ser una de las 20 seleccionadas.</h3>
-    
+
     <form action="https://formsubmit.co/istemsd@gmail.com" method="POST">
       <input type="text" name="nombre_completo" placeholder="Nombre completo" required />
       <input type="number" name="edad" placeholder="Edad" min="16" max="99" required />
@@ -32,10 +35,10 @@
       <input type="tel" name="telefono" placeholder="Teléfono" />
       <input type="text" name="curso" value="Secretariado Ejecutivo" readonly />
 
-      <!-- Este mensaje personalizado llegará a tu correo -->
-      <input type="hidden" name="mensaje" value="Esta persona se inscribió al curso de Secretariado Ejecutivo desde totalcash.xyz" />
-
+      <!-- Campos ocultos -->
+      <input type="hidden" name="mensaje" value="Inscripción enviada desde totalcash.xyz" />
       <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_next" value="https://totalcash.xyz/gracias.html" />
 
       <button type="submit">Inscribirme</button>

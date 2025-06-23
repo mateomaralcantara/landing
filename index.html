@@ -44,20 +44,25 @@
 
     document.getElementById("formulario").addEventListener("submit", async function(e) {
       e.preventDefault();
+      
+      const form = e.target;
       const data = {
-        nombre_completo: this.nombre_completo.value,
-        edad: parseInt(this.edad.value),
-        correo_electronico: this.correo_electronico.value,
-        telefono: this.telefono.value
+        nombre_completo: form.nombre_completo.value,
+        edad: parseInt(form.edad.value),
+        correo_electronico: form.correo_electronico.value,
+        telefono: form.telefono.value
       };
 
-      const exito = await enviarFormulario(data);
       const mensaje = document.getElementById("mensaje");
+      const exito = await enviarFormulario(data);
+      
       if (exito) {
         mensaje.innerText = "✅ ¡Formulario enviado correctamente!";
-        this.reset();
+        mensaje.style.color = "green";
+        form.reset();
       } else {
-        mensaje.innerText = "❌ Hubo un error al enviar el formulario.";
+        mensaje.innerText = "❌ Hubo un error al enviar el formulario. Verifica los permisos y tu conexión.";
+        mensaje.style.color = "red";
       }
     });
   </script>

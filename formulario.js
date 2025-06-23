@@ -1,43 +1,54 @@
 const SUPABASE_URL = 'https://dshmmwyknvmxeeqsuxpt.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIs...'; // Trunca si lo publicas
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // reemplaza si es necesario
 
-const form = document.querySelector('form');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const nombre = document.getElementById('nombre').value;
-  const edad = document.getElementById('edad').value;
-  const correo = document.getElementById('correo').value;
-  const telefono = document.getElementById('telefono').value;
-
+async function enviarFormulario(data) {
   try {
-    const { data, error } = await fetch(`${SUPABASE_URL}/rest/v1/inscripciones`, {
+    const response = await fetch(`${SUPABASE_URL}/rest/v1/inscripciones`, {
       method: 'POST',
       headers: {
+        'Content-Type': 'application/json',
         'apikey': SUPABASE_KEY,
         'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
+        'Prefer': 'return=representation'  // Te devuelve el objeto insertado o error
       },
-      body: JSON.stringify({
-        nombre,
-        edad,
-        correo,
-        telefono
-      })
-    }).then(res => res.json());
+      body: JSON.stringify(data)
+    });
 
-    if (error) {
-      alert('❌ Error al enviar: ' + error.message);
-      console.error(error);
-    } else {
-      alert('✅ Formulario enviado correctamente');
-      form.reset();
+    const resultado = await response.json();
+
+    if (!response.ok) {
+      console.error("❌ ERROR HTTP:", response.status);
+      console.error("🧠 DETALLES:", resultado);
+      throw new Error(`HTTP ${response.status} - ${JSON.stringify(resultado)}`);
     }
 
-  } catch (err) {
-    console.error('Error de red o configuración:', err);
-    alert('❌ Hubo un error al conectar con el servidor.');
+    console.log("✅ INSERCIÓN EXITOSA:", resultado);
+    return { success: true, data: resultado };
+
+  } catch (error) {
+    console.error("💥 EXCEPCIÓN:", error.message);
+    return { success: false, error: error.message };
+  }
+}
+
+// Prueba de ejemplo
+document.getElementById("formulario").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const data = {
+    nombre_completo: document.getElementById("nombre_completo").value,
+    edad: parseInt(document.getElementById("edad").value),
+    correo_electronico: document.getElementById("correo_electronico").value,
+    telefono: document.getElementById("telefono").value
+  };
+
+  const { success, error } = await enviarFormulario(data);
+  const mensaje = document.getElementById("mensaje");
+
+  if (success) {
+    mensaje.innerText = "✅ ¡Formulario enviado correctamente!";
+    mensaje.style.color = "green";
+  } else {
+    mensaje.innerText = `❌ Error: ${error}`;
+    mensaje.style.color = "red";
   }
 });

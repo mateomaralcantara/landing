@@ -35,11 +35,13 @@ async function enviarFormulario(data) {
 document.getElementById("formulario").addEventListener("submit", async (e) => {
   e.preventDefault();
   const data = {
-    nombre_completo: document.getElementById("nombre_completo").value,
-    edad: parseInt(document.getElementById("edad").value),
-    correo_electronico: document.getElementById("correo_electronico").value,
-    telefono: document.getElementById("telefono").value
+    id: crypto.randomUUID(), // Genera un UUID único
+    nombre_completo: form.nombre_completo.value,
+    edad: parseInt(form.edad.value),
+    correo_electronico: form.correo_electronico.value,
+    telefono: form.telefono.value
   };
+  
 
   const { success, error } = await enviarFormulario(data);
   const mensaje = document.getElementById("mensaje");

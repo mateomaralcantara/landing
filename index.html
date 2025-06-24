@@ -2,25 +2,95 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Inscripción de Estudiantes</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #f7f7f7; }
-    .container { max-width: 500px; margin: auto; background: white; padding: 2rem; border-radius: 8px; }
-    input, button { width: 100%; margin: 0.5rem 0; padding: 0.5rem; font-size: 1rem; }
-    #mensaje { margin-top: 1rem; font-weight: bold; }
+    :root {
+      --color-principal: #0077ff;
+      --color-fondo: #f2f4f8;
+      --color-blanco: #fff;
+      --color-texto: #333;
+      --sombra: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--color-fondo);
+      color: var(--color-texto);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .container {
+      background: var(--color-blanco);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: var(--sombra);
+      max-width: 460px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .container img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      margin-bottom: 0.5rem;
+      color: var(--color-principal);
+    }
+
+    h3 {
+      margin-bottom: 1.5rem;
+      font-weight: normal;
+      font-size: 1rem;
+    }
+
+    form input,
+    form button {
+      width: 100%;
+      padding: 0.9rem;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    form button {
+      background-color: var(--color-principal);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #005fc1;
+    }
+
+    #mensaje {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <img src="images/Secretariado.jpg" alt="Secretariado" loading="lazy" />
     <h1>¡Inscríbete Hoy!</h1>
     <h3>Completa este formulario y participa para ser una de las 20 seleccionadas.</h3>
 
-    <form id="formulario">
+    <form id="formulario" autocomplete="on">
       <input type="text" id="nombre_completo" placeholder="Nombre completo" required />
-      <input type="number" id="edad" placeholder="Edad" min="16" max="99" required />
+      <input type="number" id="edad" placeholder="Edad (16 a 99)" min="16" max="99" required />
       <input type="email" id="correo_electronico" placeholder="Correo electrónico" required />
-      <input type="tel" id="telefono" placeholder="Teléfono" required />
+      <input type="tel" id="telefono" placeholder="Teléfono" pattern="[0-9]{10,15}" required />
       <button type="submit">Inscribirme</button>
     </form>
 
@@ -31,14 +101,15 @@
     const SUPABASE_URL = 'https://dshmmwyknvmxeeqsuxpt.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzaG1td3lrbnZteGVlcXN1eHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3MTEwOTIsImV4cCI6MjA2NjI4NzA5Mn0.-FbDqdWKsjLjVmjtz42J7FRfhKklXjrOiAgo3jd7r_k';
 
-    document.getElementById("formulario").addEventListener("submit", async function(e) {
+    document.getElementById("formulario").addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const data = {
-        nombre_completo: document.getElementById("nombre_completo").value,
+        id: crypto.randomUUID(),
+        nombre_completo: document.getElementById("nombre_completo").value.trim(),
         edad: parseInt(document.getElementById("edad").value),
-        correo_electronico: document.getElementById("correo_electronico").value,
-        telefono: document.getElementById("telefono").value
+        correo_electronico: document.getElementById("correo_electronico").value.trim(),
+        telefono: document.getElementById("telefono").value.trim()
       };
 
       const mensaje = document.getElementById("mensaje");
@@ -63,7 +134,7 @@
           const error = await response.text();
           mensaje.innerText = "❌ Error al enviar: " + error;
           mensaje.style.color = "red";
-          console.error("Respuesta no OK:", error);
+          console.error("Error:", error);
         }
       } catch (err) {
         mensaje.innerText = "❌ Error de red o configuración.";

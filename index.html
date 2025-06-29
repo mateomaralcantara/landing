@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inscripción de Estudiantes</title>
+  <title>EMPLEATEAI - Noticias y Registro</title>
   <style>
     :root {
       --color-principal: #0077ff;
@@ -13,16 +13,64 @@
       --sombra: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
 
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
       font-family: 'Segoe UI', sans-serif;
       background: var(--color-fondo);
       color: var(--color-texto);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
       padding: 1rem;
+    }
+
+    .contenido-central {
+      max-width: 1024px;
+      margin: auto;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .noticias {
+      width: 100%;
+    }
+
+    .noticias h2 {
+      text-align: center;
+      color: var(--color-principal);
+      margin-bottom: 1.5rem;
+    }
+
+    .noticia-card {
+      background: var(--color-blanco);
+      box-shadow: var(--sombra);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .noticia-card img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    .noticia-contenido {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .noticia-contenido h3 {
+      margin-top: 0;
+      color: var(--color-principal);
+    }
+
+    .noticia-contenido p {
+      margin: 0.5rem 0;
     }
 
     .container {
@@ -30,8 +78,8 @@
       padding: 2rem;
       border-radius: 12px;
       box-shadow: var(--sombra);
-      max-width: 460px;
       width: 100%;
+      max-width: 460px;
       text-align: center;
     }
 
@@ -42,8 +90,8 @@
     }
 
     h1 {
-      margin-bottom: 0.5rem;
       color: var(--color-principal);
+      margin-bottom: 0.5rem;
     }
 
     h3 {
@@ -78,28 +126,60 @@
       margin-top: 1rem;
       font-weight: bold;
     }
+
+    @media (min-width: 700px) {
+      .noticias-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <img src="images/Secretariado.jpg" alt="Secretariado" loading="lazy" />
-    <h1>¡Inscríbete Hoy!</h1>
-    <h3>Completa este formulario y participa para ser una de las 20 seleccionadas.</h3>
 
-    <form id="formulario" autocomplete="on">
-      <input type="text" id="nombre_completo" placeholder="Nombre completo" required />
-      <input type="number" id="edad" placeholder="Edad (16 a 99)" min="16" max="99" required />
-      <input type="email" id="correo_electronico" placeholder="Correo electrónico" required />
-      <input type="tel" id="telefono" placeholder="Teléfono" pattern="[0-9]{10,15}" required />
-      <button type="submit">Inscribirme</button>
-    </form>
+  <div class="contenido-central">
 
-    <p id="mensaje"></p>
+    <!-- NOTICIA DESTACADA COMO PRINCIPAL -->
+    <section class="noticias">
+      <h2>📰 EMPLEATEAI: Revolución Dominicana en el Empleo Digital</h2>
+      <div class="noticias-grid">
+        <div class="noticia-card">
+          <a href="empleateai.html" style="text-decoration: none; color: inherit;">
+            <img src="images/empleateai.jpg" alt="EMPLEATEAI" />
+            <div class="noticia-contenido">
+              <h3>EMPLEATEAI: Revolución Dominicana en el Empleo Digital</h3>
+              <p><small>Publicado: 28 de junio de 2025</small></p>
+              <p>Creada por estudiantes del ISTEM, esta plataforma está transformando cómo se consigue empleo en RD.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMULARIO DE INSCRIPCIÓN -->
+    <div class="container">
+      <img src="images/Secretariado.jpg" alt="Secretariado" loading="lazy" />
+      <h1>¡Inscríbete Hoy!</h1>
+      <h3>Completa este formulario y participa para ser una de las 20 seleccionadas.</h3>
+
+      <form id="formulario" autocomplete="on">
+        <input type="text" id="nombre_completo" placeholder="Nombre completo" required />
+        <input type="number" id="edad" placeholder="Edad (16 a 99)" min="16" max="99" required />
+        <input type="email" id="correo_electronico" placeholder="Correo electrónico" required />
+        <input type="tel" id="telefono" placeholder="Teléfono" pattern="[0-9]{10,15}" required />
+        <button type="submit">Inscribirme</button>
+      </form>
+
+      <p id="mensaje"></p>
+    </div>
+
   </div>
 
+  <!-- SCRIPT CON SUPABASE -->
   <script>
     const SUPABASE_URL = 'https://dshmmwyknvmxeeqsuxpt.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRzaG1td3lrbnZteGVlcXN1eHB0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3MTEwOTIsImV4cCI6MjA2NjI4NzA5Mn0.-FbDqdWKsjLjVmjtz42J7FRfhKklXjrOiAgo3jd7r_k';
+    const SUPABASE_KEY = 'eyJhbGciOiJI...'; // 🚨 Asegúrate de proteger esta key
 
     document.getElementById("formulario").addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -134,14 +214,13 @@
           const error = await response.text();
           mensaje.innerText = "❌ Error al enviar: " + error;
           mensaje.style.color = "red";
-          console.error("Error:", error);
         }
       } catch (err) {
         mensaje.innerText = "❌ Error de red o configuración.";
         mensaje.style.color = "red";
-        console.error("Excepción:", err);
       }
     });
   </script>
+
 </body>
 </html>

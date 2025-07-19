@@ -176,6 +176,25 @@
 
   </div>
 
+  <!-- FORMULARIO DE INSCRIPCIÓN -->
+  <div class="container">
+    <img src="images/oratoria.jpg" alt="ORATORIA" loading="lazy" />
+    <h1>¡Inscríbete Hoy!</h1>
+    <h3>Completa este formulario y participa para ser una/o de los 20 seleccionados.</h3>
+
+    <form id="formulario" autocomplete="on">
+      <input type="text" id="nombre_completo" placeholder="Nombre completo" required />
+      <input type="number" id="edad" placeholder="Edad (16 a 99)" min="16" max="99" required />
+      <input type="email" id="correo_electronico" placeholder="Correo electrónico" required />
+      <input type="tel" id="telefono" placeholder="Teléfono" pattern="[0-9]{10,15}" required />
+      <button type="submit">Inscribirme</button>
+    </form>
+
+    <p id="mensaje"></p>
+  </div>
+
+</div>
+
   <!-- SCRIPT CON SUPABASE -->
   <script>
     const SUPABASE_URL = 'https://dshmmwyknvmxeeqsuxpt.supabase.co';
